@@ -34,7 +34,7 @@ InferCreationAttributes<Assessment>
       },
       instrumentType: {
         allowNull: false,
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
       },
       score: {
         allowNull: false,
@@ -50,7 +50,7 @@ InferCreationAttributes<Assessment>
       },
       catDateOfBirth: {
         allowNull: false,
-        type: DataTypes.DATEONLY,
+        type: DataTypes.DATE,
       },
       createdAt: {
         allowNull: false,
