@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { AssessmentService } from '../../services/AssessmentService';
@@ -12,21 +12,24 @@ export const NewAssessment = () => {
   // create a form that utilizes the "onSubmit" function to send data to
   // packages/client/src/services/AssessmentService.js and then onto the packages/api/src/routes/assessment express API
 
-  const { handleSubmit, register } = useForm({
+  const { handleSubmit, register, setValue } = useForm({
     defaultValues: {
       dateOfBirth: Date.now(),
+      instrumentType: `Cat Behavioral`,
       name: ``,
-      questions: {
-        alterWithCats: 0,
-        alterWithOwner: 0,
-        contact: 0,
-        hisses: 0,
-        play: 0,
-      },
+      score: 0,
     },
   });
 
+  const [ contact, setContact ] = useState(0);
+  const [ alterWithCats, setAlterWithCats ] = useState(0);
+  const [ alterWithOwner, setAlterWithOwner ] = useState(0);
+  const [ play, setPlay ] = useState(0);
+  const [ hisses, setHisses ] = useState(0);
+
+  const [ score, setScore ] = useState(0);
   const onSubmit = async (data) => {
+    console.log(data);
     await AssessmentService.submit(data);
   };
 
@@ -63,47 +66,52 @@ export const NewAssessment = () => {
       <Form.Group register={`questions.contact`}>
         <Form.Label>1. Previous contact with the Cat Judicial System</Form.Label>
         <Form.Check className={classes.check} type="radio" label="No"
-          {...register(`questions.contact`)} value="0" />
+          onClick={() => setContact(0)} />
         <Form.Check className={classes.check} type="radio" label="Yes"
-          {...register(`questions.contact`)} value="1" />
+          onClick={() => setContact(1)} />
       </Form.Group>
 
       <Form.Group >
         <Form.Label>2. Physical altercations with other cats</Form.Label>
         <Form.Check className={classes.check} type="radio" label="0-3 altercations"
-          {...register(`questions.alterWithCats`)} value="0" />
+          onClick={() => setAlterWithCats(0)} />
 
         <Form.Check className={classes.check} type="radio" label="3+ altercations"
-          {...register(`questions.alterWithCats`)} value="1" />
+          onClick={() => setAlterWithCats(1)} />
       </Form.Group>
 
       <Form.Group >
         <Form.Label>3. Physical altercations with owner (scratching, biting, etc...)</Form.Label>
 
         <Form.Check className={classes.check} type="radio" label="0-10 altercations"
-          {...register(`questions.alterWithOwner`)} value="0" />
+          onClick={() => setAlterWithOwner(0)} />
         <Form.Check className={classes.check} type="radio" label="10+ altercations"
-          {...register(`questions.alterWithOwner`)} value="1" />
+          onClick={() => setAlterWithOwner(1)} />
       </Form.Group>
 
       <Form.Group >
         <Form.Label>4. Plays well with dogs</Form.Label>
         <Form.Check className={classes.check} type="radio" label="Yes"
-          {...register(`questions.play`)} value="0" />
+          onClick={() => setPlay(0)} />
         <Form.Check className={classes.check} type="radio" label="No"
-          {...register(`questions.play`)} value="1" />
+          onClick={() => setPlay(1)} />
       </Form.Group>
 
       <Form.Group >
         <Form.Label>5. Hisses at strangers</Form.Label>
         <Form.Check className={classes.check} type="radio" label="No"
-          {...register(`questions.hisses`)} value="0" />
+          onClick={() => setHisses(0)} />
         <Form.Check className={classes.check} type="radio" label="Yes"
-          {...register(`questions.hisses`)} value="1" />
+          onClick={() => setHisses(1)} />
       </Form.Group>
     </Form.Group>
 
-    <Button variant="primary" type="submit">Submit</Button>
+    <Button variant="primary" type="submit"
+      onClick={() => {
+        setScore(contact + alterWithCats + alterWithOwner + play + hisses);
+        setValue(`score`, score);
+      }}
+    >Submit</Button>
 
   </Form>;
 };
