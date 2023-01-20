@@ -21,6 +21,5 @@ exports.getList = async () => {
   // the assessment data from the PostgreSQL database
   const assessments = await (await Assessment.findAll()).map(assessment => assessment.dataValues);
 
-  console.log(`1`);
   return assessments;
 };
