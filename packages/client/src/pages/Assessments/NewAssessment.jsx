@@ -12,7 +12,7 @@ export const NewAssessment = () => {
   // create a form that utilizes the "onSubmit" function to send data to
   // packages/client/src/services/AssessmentService.js and then onto the packages/api/src/routes/assessment express API
 
-  const { handleSubmit, register, setValue } = useForm({
+  const { handleSubmit, register, reset, setValue } = useForm({
     defaultValues: {
       dateOfBirth: Date.now(),
       instrumentType: `Cat Behavioral`,
@@ -28,8 +28,10 @@ export const NewAssessment = () => {
   const [ hisses, setHisses ] = useState(0);
 
   const [ score, setScore ] = useState(0);
+
   const onSubmit = async (data) => {
     await AssessmentService.submit(data);
+    reset();
   };
 
   return <Form className={classes.form} onSubmit={handleSubmit(onSubmit)}>

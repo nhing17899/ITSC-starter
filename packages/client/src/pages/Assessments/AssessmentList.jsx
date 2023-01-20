@@ -30,12 +30,9 @@ export const AssessmentList = () => {
   //   setData(...data, temp);
   // });
 
-  const data = React.useMemo(
-    () => [
-      ...assessments,
-    ],
-    []
-  );
+  const data = [
+    ...assessments,
+  ];
 
   const columns = useMemo(
     () => [
@@ -81,6 +78,8 @@ export const AssessmentList = () => {
       <h1 className={classes.title}>Assessment List</h1>
       <table {...getTableProps()} style={{
         border: `solid 1px gray`,
+        marginBottom: `7rem`,
+
         textAlign: `center`,
         width: `80rem`,
       }}>
