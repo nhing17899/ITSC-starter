@@ -29,7 +29,6 @@ export const NewAssessment = () => {
 
   const [ score, setScore ] = useState(0);
   const onSubmit = async (data) => {
-    console.log(data);
     await AssessmentService.submit(data);
   };
 
@@ -65,43 +64,43 @@ export const NewAssessment = () => {
       <Form.Label className={classes.heading}>Questions & Responses</Form.Label>
       <Form.Group register={`questions.contact`}>
         <Form.Label>1. Previous contact with the Cat Judicial System</Form.Label>
-        <Form.Check className={classes.check} type="radio" label="No"
+        <Form.Check className={classes.check} name="contact" type="radio" label="No"
           onClick={() => setContact(0)} />
-        <Form.Check className={classes.check} type="radio" label="Yes"
+        <Form.Check className={classes.check} name="contact" type="radio" label="Yes"
           onClick={() => setContact(1)} />
       </Form.Group>
 
       <Form.Group >
         <Form.Label>2. Physical altercations with other cats</Form.Label>
-        <Form.Check className={classes.check} type="radio" label="0-3 altercations"
+        <Form.Check className={classes.check} name="alterCat" type="radio" label="0-3 altercations"
           onClick={() => setAlterWithCats(0)} />
 
-        <Form.Check className={classes.check} type="radio" label="3+ altercations"
+        <Form.Check className={classes.check} name="alterCat" type="radio" label="3+ altercations"
           onClick={() => setAlterWithCats(1)} />
       </Form.Group>
 
       <Form.Group >
         <Form.Label>3. Physical altercations with owner (scratching, biting, etc...)</Form.Label>
 
-        <Form.Check className={classes.check} type="radio" label="0-10 altercations"
+        <Form.Check className={classes.check} name="alterOwner" type="radio" label="0-10 altercations"
           onClick={() => setAlterWithOwner(0)} />
-        <Form.Check className={classes.check} type="radio" label="10+ altercations"
+        <Form.Check className={classes.check} name="alterOwner" type="radio" label="10+ altercations"
           onClick={() => setAlterWithOwner(1)} />
       </Form.Group>
 
       <Form.Group >
         <Form.Label>4. Plays well with dogs</Form.Label>
-        <Form.Check className={classes.check} type="radio" label="Yes"
+        <Form.Check className={classes.check} name="play" type="radio" label="Yes"
           onClick={() => setPlay(0)} />
-        <Form.Check className={classes.check} type="radio" label="No"
+        <Form.Check className={classes.check} name="play" type="radio" label="No"
           onClick={() => setPlay(1)} />
       </Form.Group>
 
       <Form.Group >
         <Form.Label>5. Hisses at strangers</Form.Label>
-        <Form.Check className={classes.check} type="radio" label="No"
+        <Form.Check className={classes.check} name="hisses" type="radio" label="No"
           onClick={() => setHisses(0)} />
-        <Form.Check className={classes.check} type="radio" label="Yes"
+        <Form.Check className={classes.check} name="hisses" type="radio" label="Yes"
           onClick={() => setHisses(1)} />
       </Form.Group>
     </Form.Group>
