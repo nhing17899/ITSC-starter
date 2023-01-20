@@ -14,13 +14,13 @@ exports.submit = async (assessment) => {
   });
 
   await data.save();
-  console.log(data);
 };
 
 exports.getList = async () => {
   // use the sequelize model Assessments from packages/api/src/database/models to fetch
   // the assessment data from the PostgreSQL database
   const assessments = await (await Assessment.findAll()).map(assessment => assessment.dataValues);
-  console.log(assessments);
+
+  console.log(`1`);
   return assessments;
 };
