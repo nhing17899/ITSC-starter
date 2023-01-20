@@ -14,6 +14,7 @@ export const NewAssessment = () => {
 
   const { handleSubmit, register, reset, setValue } = useForm({
     defaultValues: {
+      checkBox: [ 0, 0, 0, 0, 0 ],
       dateOfBirth: Date.now(),
       instrumentType: `Cat Behavioral`,
       name: ``,
@@ -21,17 +22,25 @@ export const NewAssessment = () => {
     },
   });
 
-  const [ contact, setContact ] = useState(0);
-  const [ alterWithCats, setAlterWithCats ] = useState(0);
-  const [ alterWithOwner, setAlterWithOwner ] = useState(0);
-  const [ play, setPlay ] = useState(0);
-  const [ hisses, setHisses ] = useState(0);
+  function sum(obj) {
+    let objSum = 0;
+    for (const el in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, el)) {
+        objSum += parseFloat(obj[el]);
+      }
+    }
+    return objSum;
+  }
 
-  const [ score, setScore ] = useState(0);
+  const onSubmit = (data) => {
+    // calculate score here
+    data.score = sum(data.checkBox);
 
-  const onSubmit = async (data) => {
-    await AssessmentService.submit(data);
-    reset();
+    AssessmentService.submit(data)
+      .then(() => {
+        console.log(data);
+        // reset();
+      });
   };
 
   return <Form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
@@ -64,55 +73,114 @@ export const NewAssessment = () => {
 
     <Form.Group className="mb-3">
       <Form.Label className={classes.heading}>Questions & Responses</Form.Label>
-      <Form.Group register={`questions.contact`}>
+
+      <Form.Group>
         <Form.Label>1. Previous contact with the Cat Judicial System</Form.Label>
-        <Form.Check className={classes.check} name="contact" type="radio" label="No"
-          onClick={() => setContact(0)} />
-        <Form.Check className={classes.check} name="contact" type="radio" label="Yes"
-          onClick={() => setContact(1)} />
+        <Form.Check
+          className={classes.check}
+          name="contact"
+          type="radio"
+          label="No"
+          value="0"
+          {...register(`checkBox[0]`, { required: true })}
+        />
+
+        <Form.Check
+          className={classes.check}
+          name="contact"
+          type="radio"
+          label="Yes"
+          value="1"
+          {...register(`checkBox[0]`, { required: true })}
+        />
       </Form.Group>
 
-      <Form.Group >
+      <Form.Group>
         <Form.Label>2. Physical altercations with other cats</Form.Label>
-        <Form.Check className={classes.check} name="alterCat" type="radio" label="0-3 altercations"
-          onClick={() => setAlterWithCats(0)} />
+        <Form.Check
+          className={classes.check}
+          name="alterCat"
+          type="radio"
+          label="0-3 altercations"
+          value="0"
+          {...register(`checkBox[1]`, { required: true })}
+        />
 
-        <Form.Check className={classes.check} name="alterCat" type="radio" label="3+ altercations"
-          onClick={() => setAlterWithCats(1)} />
+        <Form.Check
+          className={classes.check}
+          name="alterCat"
+          type="radio"
+          label="3+ altercations"
+          value="1"
+          {...register(`checkBox[1]`, { required: true })}
+        />
       </Form.Group>
 
-      <Form.Group >
+      <Form.Group>
         <Form.Label>3. Physical altercations with owner (scratching, biting, etc...)</Form.Label>
+        <Form.Check
+          className={classes.check}
+          name="alterOwner"
+          type="radio"
+          label="0-10 altercations"
+          value="0"
+          {...register(`checkBox[2]`, { required: true })}
+        />
 
-        <Form.Check className={classes.check} name="alterOwner" type="radio" label="0-10 altercations"
-          onClick={() => setAlterWithOwner(0)} />
-        <Form.Check className={classes.check} name="alterOwner" type="radio" label="10+ altercations"
-          onClick={() => setAlterWithOwner(1)} />
+        <Form.Check
+          className={classes.check}
+          name="alterOwner"
+          type="radio"
+          label="10+ altercations"
+          value="1"
+          {...register(`checkBox[2]`, { required: true })}
+        />
       </Form.Group>
 
-      <Form.Group >
+      <Form.Group>
         <Form.Label>4. Plays well with dogs</Form.Label>
-        <Form.Check className={classes.check} name="play" type="radio" label="Yes"
-          onClick={() => setPlay(0)} />
-        <Form.Check className={classes.check} name="play" type="radio" label="No"
-          onClick={() => setPlay(1)} />
+        <Form.Check
+          className={classes.check}
+          name="play"
+          type="radio"
+          label="Yes"
+          value="0"
+          {...register(`checkBox[3]`, { required: true })}
+        />
+
+        <Form.Check
+          className={classes.check}
+          name="play"
+          type="radio"
+          label="No"
+          value="1"
+          {...register(`checkBox[3]`, { required: true })}
+        />
       </Form.Group>
 
-      <Form.Group >
+      <Form.Group>
         <Form.Label>5. Hisses at strangers</Form.Label>
-        <Form.Check className={classes.check} name="hisses" type="radio" label="No"
-          onClick={() => setHisses(0)} />
-        <Form.Check className={classes.check} name="hisses" type="radio" label="Yes"
-          onClick={() => setHisses(1)} />
+        <Form.Check
+          className={classes.check}
+          name="hisses"
+          type="radio"
+          label="No"
+          value="0"
+          {...register(`checkBox[4]`, { required: true })}
+        />
+
+        <Form.Check
+          className={classes.check}
+          name="hisses"
+          type="radio"
+          label="Yes"
+          value="1"
+          {...register(`checkBox[4]`, { required: true })}
+        />
       </Form.Group>
     </Form.Group>
 
-    <Button variant="primary" type="submit"
-      onClick={() => {
-        setScore(contact + alterWithCats + alterWithOwner + play + hisses);
-        setValue(`score`, score);
-      }}
-    >Submit</Button>
+    <Button variant="primary" type="submit">Submit</Button>
 
   </Form>;
 };

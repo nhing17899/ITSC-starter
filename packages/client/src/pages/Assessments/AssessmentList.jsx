@@ -16,24 +16,6 @@ export const AssessmentList = () => {
     });
   }, []);
 
-  // const [ data, setData ] = useState([]);
-
-  // assessments.forEach(assessment => {
-  //   const temp = {
-  //     catDateOfBirth: assessment.catDateOfBirth,
-  //     catName: assessment.catName,
-  //     id: assessment.id,
-  //     instrumentType: assessment.instrumentType,
-  //     riskLevel: assessment.riskLevel,
-  //     score: assessment.score,
-  //   };
-  //   setData(...data, temp);
-  // });
-
-  const data = [
-    ...assessments,
-  ];
-
   const columns = useMemo(
     () => [
 
@@ -71,7 +53,7 @@ export const AssessmentList = () => {
     headerGroups,
     prepareRow,
     rows,
-  } = useTable({ columns, data });
+  } = useTable({ columns, data: assessments });
 
   return (
     <div>
