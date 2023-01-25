@@ -1,9 +1,18 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useTable } from 'react-table';
+import { useGlobalFilter, useSortBy, useTable } from 'react-table';
 
+import { format } from 'date-fns';
 import { AssessmentService } from '../../services/AssessmentService';
 
 import classes from './AssessmentList.module.css';
+
+const GlobalFilter = ({ filter, setFilter }) =>
+  <div className={classes.globalFilter}>
+    Search: {` `}
+    <input value={filter || ``}
+      onChange={(e) => setFilter(e.target.value)}
+    />
+  </div>;
 
 export const AssessmentList = () => {
   const [ assessments, setAssessments ] = useState([]);
@@ -43,6 +52,11 @@ export const AssessmentList = () => {
         Header: `Cat Date Of Birth`,
         accessor: `catDateOfBirth`,
       },
+      {
+        Cell: ({ value }) => format(new Date(value), `yyyy-MM-dd`),
+        Header: `Creation Date`,
+        accessor: `createdAt`,
+      },
     ],
     []
   );
@@ -53,11 +67,17 @@ export const AssessmentList = () => {
     headerGroups,
     prepareRow,
     rows,
-  } = useTable({ columns, data: assessments });
 
+    setGlobalFilter,
+    state,
+  } = useTable({ columns, data: assessments },
+    useGlobalFilter, useSortBy);
+
+  const { globalFilter } = state;
   return (
     <div>
       <h1 className={classes.title}>Assessment List</h1>
+      <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
       <table {...getTableProps()} style={{
         border: `solid 1px gray`,
         marginBottom: `7rem`,
@@ -69,17 +89,23 @@ export const AssessmentList = () => {
           {headerGroups.map(headerGroup =>
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column =>
-                <th
-                  {...column.getHeaderProps()}
-
+                <th {...column.getHeaderProps(column.getSortByToggleProps())}
                   style={{
                     borderBottom: `1px solid black`,
                     borderRight: `1px solid black`,
+                    cursor: `pointer`,
                     margin: `0`,
                     padding: `0.5rem`,
-                  }}
-                >
+                  }}>
+
                   {column.render(`Header`)}
+                  <span>
+                    {column.isSorted ?
+                      column.isSortedDesc ?
+                        ` 🔽` :
+                        ` 🔼` :
+                      ``}
+                  </span>
                 </th>)}
             </tr>)}
         </thead>

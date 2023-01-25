@@ -12,34 +12,40 @@ export const NewAssessment = () => {
   // create a form that utilizes the "onSubmit" function to send data to
   // packages/client/src/services/AssessmentService.js and then onto the packages/api/src/routes/assessment express API
 
-  const { handleSubmit, register, reset, setValue } = useForm({
+  const { control, handleSubmit, register, reset, setValue } = useForm({
     defaultValues: {
       checkBox: [ 0, 0, 0, 0, 0 ],
       dateOfBirth: Date.now(),
-      instrumentType: `Cat Behavioral`,
+      instrumentType: 1,
       name: ``,
+      riskLevel: ``,
       score: 0,
     },
   });
 
-  function sum(obj) {
-    let objSum = 0;
-    for (const el in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, el)) {
-        objSum += parseFloat(obj[el]);
-      }
+  const sum = (data) => {
+    let scoreSum = 0;
+
+    for (const el in data) {
+      scoreSum += parseFloat(data[el]);
     }
-    return objSum;
-  }
+    return scoreSum;
+  };
+
+  const risk = (score) => {
+    if (score <= 1) { return `low`; }
+    else if (score <= 3) { return `medium`; }
+    return `high`; };
 
   const onSubmit = (data) => {
     // calculate score here
     data.score = sum(data.checkBox);
+    data.riskLevel = risk(data.score);
+    // data.riskLevel =
 
     AssessmentService.submit(data)
       .then(() => {
-        console.log(data);
-        // reset();
+        reset();
       });
   };
 
@@ -93,6 +99,7 @@ export const NewAssessment = () => {
           value="1"
           {...register(`checkBox[0]`, { required: true })}
         />
+
       </Form.Group>
 
       <Form.Group>
